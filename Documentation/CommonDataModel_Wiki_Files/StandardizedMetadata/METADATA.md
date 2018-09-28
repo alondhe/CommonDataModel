@@ -1,15 +1,21 @@
-The METADATA table contains metadata information about a dataset that has been transformed to the OMOP Common Data Model. 
+The METADATA table contains objective facts about the CDM database or its usage that can be observed through query or obtained from data collectors				
 
 Field					|Required	|Type	|Description
 :------------------------------|:--------|:------------|:-----------------------------------------
-|metadata_concept_id		|Yes		|integer		|A foreign key that refers to a Standard Metadata Concept identifier in the Standardized Vocabularies.|
-|metadata_type_concept_id	|Yes		|integer		|A foreign key that refers to a Standard Type Concept identifier in the Standardized Vocabularies.|
-|name						|Yes		|varchar(250)	|The name of the Concept stored in metadata_concept_id or a description of the data being stored.|
-|value_as_string			|No			|nvarchar		|The metadata value stored as a string.|
-|value_as_concept_id		|No			|integer		|A foreign key to a metadata value stored as a Concept ID.|
-|metadata date				|No			|date			|The date associated with the metadata|
-|metadata_datetime			|No			|datetime		|The date and time associated with the metadata|
+metadata_id      |Yes      |integer      |A system generated primary key to identify a metadata record.
+metadata_concept_id      |Yes      |integer      |A standard concept representing the fact being rendered.
+metadata_type_concept_id      |Yes      |integer      |A standard concept identifying the metadata fact's type, which provides more granularity about the scope of the metadata.
+metadata_as_string      |No     |varchar(1000)     |A string describing the fact being rendered if no standard concept available.
+target_concept_id      |Yes      |integer        |A standard concept identifying the target this metadata will be about.
+target_as_string      |No     |varchar(250)     |A string representing the targeted content this metadata will be about, if no concept available.
+target_identifier      |No     |integer      |A foreign key to a specific identifier within the CDM.
+reference_id     |No     |integer      |A foreign key to the reference table.
+security_concept_id      |Yes      |integer      |A standard concept identifying the security access around this metadata record.
 
-### Conventions 
 
-  * 
+### Conventions
+
+  * The metadata_concept_id / metadata_type_concept_id / metadata_as_string fields should represent the actual fact being captured.
+  * The target_concept_id / target_as_string / target_identifier fields should represent the specific element of the CDM dataset that the fact is actually about.
+    * The target_identifier field can be used to specify a particular ID from the CDM, e.g. a person_id, a cohort_definition_id, a visit_occurrence_id.
+  * Use the security_concept_id to tag a sensitivity level about this piece of metadata.
